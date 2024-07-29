@@ -1,4 +1,5 @@
-1.find
-2.ps
-3.killall
-4.cmp
+1.ls -l
+2.find
+3.ps
+4.killall
+5.cmp
