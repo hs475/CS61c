@@ -1,8 +1,9 @@
-1.mv
-2.chmod
-3.pwd
-4.ping
-5.find
-6.ps
-7.killall
-8.cmp
+1.ls -l
+2.mv
+3.chmod
+4.pwd
+5.ping
+6.find
+7.ps
+8.killall
+9.cmp
