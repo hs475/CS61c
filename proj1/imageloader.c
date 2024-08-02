@@ -54,7 +54,7 @@ void writeData(Image *image)
 	for (int i = 0; i < image->rows; ++i) {
 		for (int j = 0; j < image->cols; ++j) {
 			printf("%3d %3d %3d", image->image[i][j].R, image->image[i][j].G, image->image[i][j].B);
-			if (j < image->rows - 1) printf("   ");
+			if (j < image->cols - 1) printf("   ");
 			else printf("\n");
 		}
 	}
