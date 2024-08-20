@@ -1,7 +1,7 @@
 .globl factorial
 
 .data
-n: .word 7
+n: .word 8
 
 .text
 main:
