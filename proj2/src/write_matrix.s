@@ -25,16 +25,75 @@
 write_matrix:
 
     # Prologue
+    addi sp, sp, -32
+    sw ra, 0(sp)
+    sw s0, 4(sp)
+    sw s1, 8(sp)
+    sw s2, 12(sp)
+    sw s3, 16(sp)
+    sw s4, 20(sp)
+    sw s5, 24(sp)
+    sw s6, 28(sp)
 
+    mv s0, a0
+    mv s1, a1
+    mv s2, a2
+    mv s3, a3
+    li a0, 4
+    jal malloc
+    mv s4, a0
+    sw s2, 0(s4)
+    li a0, 4
+    jal malloc
+    mv s5, a0
+    sw s3, 0(s5)
+    mv a1, s0
+    li a2, 1
+    jal fopen
+    li t3, -1
+    beq a0, t3, fopen_fail1
 
-
-
-
-
-
-
+    mv a1, a0
+    mv a2, s4
+    li a3, 1
+    mv s6, a3
+    li a4, 4
+    jal fwrite
+    bne a0, s6, fwrite_fail
+    mv a2, s5
+    jal fwrite
+    bne a0, s6, fwrite_fail
+    mv a2, s1
+    mul a3, s2, s3
+    mv s6, a3
+    li a4, 4
+    jal fwrite
+    bne a0, s6, fwrite_fail
 
     # Epilogue
-
+    jal fclose
+    li t0, -1
+    beq a0, t0, fclose_fail
+    lw ra, 0(sp)
+    lw s0, 4(sp)
+    lw s1, 8(sp)
+    lw s2, 12(sp)
+    lw s3, 16(sp)
+    lw s4, 20(sp)
+    lw s5, 24(sp)
+    lw s6, 28(sp)
+    addi sp, sp, 32
 
     ret
+
+fopen_fail1:
+    li a1, 93
+    jal exit2
+
+fwrite_fail:
+    li a1, 94
+    jal exit2
+
+fclose_fail:
+    li a1, 95
+    jal exit2

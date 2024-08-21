@@ -298,9 +298,10 @@ class TestReadMatrix(TestCase):
         t.call("read_matrix")
 
         # check the output from the function
-        t.check_array(rows, [ansrows])
-        t.check_array(cols, [anscols])
-        t.check_array_pointer("a0", matrix)
+        if not fail:
+            t.check_array(rows, [ansrows])
+            t.check_array(cols, [anscols])
+            t.check_array_pointer("a0", matrix)
 
         # generate assembly and run it through venus
         t.execute(fail=fail, code=code)
@@ -359,23 +360,51 @@ class TestReadMatrix(TestCase):
 
 class TestWriteMatrix(TestCase):
 
-    def do_write_matrix(self, fail='', code=0):
+    def do_write_matrix(self, outfile, reference, fail='', code=0):
         t = AssemblyTest(self, "write_matrix.s")
-        outfile = "outputs/test_write_matrix/student.bin"
         # load output file name into a0 register
         t.input_write_filename("a0", outfile)
         # load input array and other arguments
-        raise NotImplementedError("TODO")
-        # TODO
+        t.input_array("a1", t.array([1, 2, 3, 4, 5, 6, 7, 8, 9]))
+        t.input_scalar("a2", 3)
+        t.input_scalar("a3", 3)
         # call `write_matrix` function
         t.call("write_matrix")
         # generate assembly and run it through venus
         t.execute(fail=fail, code=code)
         # compare the output file against the reference
-        t.check_file_output(outfile, "outputs/test_write_matrix/reference.bin")
+        if not fail:
+            t.check_file_output(outfile, reference)
 
     def test_simple(self):
-        self.do_write_matrix()
+        self.do_write_matrix(
+            outfile = "outputs/test_write_matrix/output.bin", 
+            reference = "outputs/test_write_matrix/reference.bin"
+        )
+
+    def test_1(self):
+        self.do_write_matrix(
+            outfile = "outputs/test_write_matrix/output.bin", 
+            reference = "outputs/test_write_matrix/reference.bin",
+            fail = 'fclose',
+            code = 95
+        )
+
+    def test_2(self):
+        self.do_write_matrix(
+            outfile = "outputs/test_write_matrix/output.bin", 
+            reference = "outputs/test_write_matrix/reference.bin",
+            fail = 'fopen',
+            code = 93
+        )
+
+    def test_3(self):
+        self.do_write_matrix(
+            outfile = "outputs/test_write_matrix/output.bin", 
+            reference = "outputs/test_write_matrix/reference.bin",
+            fail = 'fwrite',
+            code = 94
+        )
 
     @classmethod
     def tearDownClass(cls):
