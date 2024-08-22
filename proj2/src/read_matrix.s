@@ -97,7 +97,7 @@ read_matrix:
     lw ra, 12(sp)
     lw s3, 16(sp)
     lw s6, 20(sp)
-    lw s7, 34(sp)
+    lw s7, 24(sp)
     addi sp, sp, 28
     ret
 

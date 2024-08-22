@@ -31,6 +31,7 @@ loop_start:
     lw t0, 0(a0)
     bge s1, t0, loop_continue
     mv s0, t1
+    mv s1, t0
 loop_continue:
     addi t1, t1, 1
     addi a0, a0, 4
